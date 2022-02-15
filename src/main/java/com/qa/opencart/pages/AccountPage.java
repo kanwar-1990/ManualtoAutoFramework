@@ -26,10 +26,7 @@ public class AccountPage {
 		if (eutil.getElementsCount(productCount) > 0) {
 			return true;
 		} else {
-			System.out.println("The mentioned product is not there: " + ProductName);
-			String errMesg = eutil.doGetText(errorMesg);
-			System.out.println(errMesg);
-			return false;
+				return false;
 		}
 	}
 

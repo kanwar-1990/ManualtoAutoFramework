@@ -14,7 +14,7 @@ public class AccountPageTest extends BaseTest {
 
 	@DataProvider
 	public Object[][] productNameData() {
-		return new Object[][] { { "IMac"},{"Macbook"}, {"Apple"},{"FitBit"}};
+		return new Object[][] { { "IMac"},{"Macbook"}, {"Apple"}};
 	}
 
 	@Test(dataProvider="productNameData")

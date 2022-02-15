@@ -39,7 +39,8 @@ public class DriverFactory {
 
 		System.out.println("The browser value is " + BrowserName);
 		if (BrowserName.equals("chrome")) {
-			WebDriverManager.chromedriver().setup();
+			
+ WebDriverManager.chromedriver().setup();
 			tldriver.set(new ChromeDriver(om.getChromeOptions(prop)));
 		} else if (BrowserName.equals("firefox")) {
 			WebDriverManager.firefoxdriver().setup();
@@ -68,18 +69,50 @@ public class DriverFactory {
 	 */
 	public Properties init_prop() {
 		prop = new Properties();
-		FileInputStream io = null;
-		try {
-			io = new FileInputStream("./src/main/java/com/qa/opencart/config/config.properties");
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		try {
+		String env = System.getProperty("env");
 
+		FileInputStream io = null;
+
+		if (env == null) {
+			try {
+				System.out.println("Running in prod environment.........");
+				io = new FileInputStream("./src/main/java/com/qa/opencart/config/config.properties");
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+
+		} else {
+
+			switch (env.toLowerCase()) {
+			case "build":
+				try {
+					io = new FileInputStream("./src/main/java/com/qa/opencart/config/build.properties");
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
+				break;
+
+			case "dev":
+				try {
+					io = new FileInputStream("./src/main/java/com/qa/opencart/config/dev.properties");
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
+				break;
+
+			default:
+				System.out.println("Please check the enviroment :" + env);
+				break;
+			}
+
+		}
+
+		try {
 			prop.load(io);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
 		return prop;
 	}
 
@@ -89,15 +122,14 @@ public class DriverFactory {
 
 	public String getScreenshot() {
 		File src = ((TakesScreenshot) getDriver()).getScreenshotAs(OutputType.FILE);
-		String path = System.getProperty("user.dir") + "/screenshot/" + System.currentTimeMillis() + ".png";
+		String path = System.getProperty("user.dir") + "/screenshots/" + System.currentTimeMillis() + ".png";
 		File destination = new File(path);
 		try {
-
 			FileUtils.copyFile(src, destination);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return path;
-	}
 
-}
+	}
+	}

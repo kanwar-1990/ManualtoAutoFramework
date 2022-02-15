@@ -23,8 +23,8 @@ AccountPage accountPage;
 //@Test
 public void setup()
 {
-	df=new DriverFactory();
-    prop=df.init_prop();   
+df=new DriverFactory();
+prop=df.init_prop();   
     driver=df.init_driver(prop);
     loginpage=new LoginPage(driver);
    registerpage=new RegistrationPage(driver);
